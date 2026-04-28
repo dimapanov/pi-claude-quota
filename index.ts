@@ -96,16 +96,35 @@ function elapsedFraction(resetsAt: string | undefined, windowMs: number): number
 	return Math.max(0, Math.min(1, frac));
 }
 
-function bar(util: number, paceMarker: number | null, restoreColor: string, width = BAR_WIDTH): string {
+// Powerline rounded caps (require a Powerline / Nerd Font)
+const CAP_LEFT = "\ue0b6";  // 
+
+const CAP_RIGHT = "\ue0b4"; // 
+
+// Bar fill / track colors (256-color palette)
+const FILL_FG = 250;   // light grey for filled cells
+const TRACK_FG = 240;  // dim grey for empty cells
+
+function bar(util: number, paceMarker: number | null, _restoreColor: string, width = BAR_WIDTH): string {
 	const clamped = Math.max(0, Math.min(100, util));
 	const filled = Math.round((clamped / 100) * width);
-	const chars = Array.from("█".repeat(filled) + "░".repeat(width - filled));
+	const cells: string[] = [];
+	for (let i = 0; i < width; i++) {
+		const isFilled = i < filled;
+		const color = isFilled ? FILL_FG : TRACK_FG;
+		cells.push(`\x1b[38;5;${color}m${isFilled ? "█" : "░"}\x1b[0m`);
+	}
 	if (paceMarker !== null && width > 0) {
 		const idx = Math.max(0, Math.min(width - 1, Math.round(paceMarker * (width - 1))));
-		// bright cyan, 1px-thin combining vertical overlay drawn on top of the cell
-		chars[idx] = `\x1b[1;96m│\x1b[0m${restoreColor}`;
+		// U+258F (left one eighth block) flush against the left edge of the cell
+		cells[idx] = `\x1b[1;96m▏\x1b[0m`;
 	}
-	return chars.join("");
+	// Rounded caps colored to match the adjacent cell so the bar reads as a capsule
+	const leftColor = filled > 0 ? FILL_FG : TRACK_FG;
+	const rightColor = filled >= width ? FILL_FG : TRACK_FG;
+	const left = `\x1b[38;5;${leftColor}m${CAP_LEFT}\x1b[0m`;
+	const right = `\x1b[38;5;${rightColor}m${CAP_RIGHT}\x1b[0m`;
+	return `${left}${cells.join("")}${right}`;
 }
 
 function paceMarker(util: number, elapsed: number | null): number | null {
