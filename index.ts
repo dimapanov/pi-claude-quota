@@ -96,31 +96,57 @@ function elapsedFraction(resetsAt: string | undefined, windowMs: number): number
 	return Math.max(0, Math.min(1, frac));
 }
 
-// Bar colors (256-color palette)
-const FILL_BG = 250;    // light grey for filled cells
-const TRACK_BG = 238;   // dim grey for empty cells
-const MARKER_BG = 87;   // bright cyan
+// Braille progress bar. Each cell holds 2 columns of dots (left/right),
+// giving 2x horizontal resolution.
+//   none           ⠀ U+2800
+//   left column    ⡇ U+2847 (dots 1,2,3,7)
+//   right column   ⢸ U+28B8 (dots 4,5,6,8)
+//   both columns   ⣿ U+28FF
+const BR_NONE = "\u2800";
+const BR_LEFT = "\u2847";
+const BR_RIGHT = "\u28b8";
+const BR_FULL = "\u28ff";
 
-// Half-block edge characters used as soft caps:
-//   ▐ (right half block) drawn in fill/track color = filled-right-half cell -> left cap
-//   ▌ (left half block)  drawn in fill/track color = filled-left-half  cell -> right cap
+const FILL_FG = 250;   // light grey
+const TRACK_FG = 240;  // dim grey
+const MARKER_FG = 87;  // bright cyan
+
 function bar(util: number, paceMarker: number | null, _restoreColor: string, width = BAR_WIDTH): string {
 	const clamped = Math.max(0, Math.min(100, util));
-	const filled = Math.round((clamped / 100) * width);
-	const cells: string[] = [];
+	const sub = width * 2; // half-cell resolution
+	const filledSub = Math.round((clamped / 100) * sub);
+	let markerSub = -1;
+	if (paceMarker !== null && sub > 0) {
+		markerSub = Math.max(0, Math.min(sub - 1, Math.round(paceMarker * (sub - 1))));
+	}
+	const out: string[] = [];
 	for (let i = 0; i < width; i++) {
-		const bg = i < filled ? FILL_BG : TRACK_BG;
-		cells.push(`\x1b[48;5;${bg}m \x1b[0m`);
+		const leftIdx = 2 * i;
+		const rightIdx = 2 * i + 1;
+		const leftIsMarker = leftIdx === markerSub;
+		const rightIsMarker = rightIdx === markerSub;
+		const leftLit = leftIdx < filledSub;
+		const rightLit = rightIdx < filledSub;
+
+		if (leftIsMarker || rightIsMarker) {
+			const otherLit = leftIsMarker ? rightLit : leftLit;
+			const markerChar = leftIsMarker ? BR_LEFT : BR_RIGHT;
+			// Single glyph cannot color halves independently; if the other half is
+			// lit, paint the whole cell cyan (marker wins).
+			const ch = otherLit ? BR_FULL : markerChar;
+			out.push(`\x1b[38;5;${MARKER_FG}m${ch}\x1b[0m`);
+			continue;
+		}
+
+		let ch: string;
+		if (leftLit && rightLit) ch = BR_FULL;
+		else if (leftLit) ch = BR_LEFT;
+		else if (rightLit) ch = BR_RIGHT;
+		else ch = BR_NONE;
+		const color = leftLit || rightLit ? FILL_FG : TRACK_FG;
+		out.push(`\x1b[38;5;${color}m${ch}\x1b[0m`);
 	}
-	if (paceMarker !== null && width > 0) {
-		const idx = Math.max(0, Math.min(width - 1, Math.round(paceMarker * (width - 1))));
-		cells[idx] = `\x1b[48;5;${MARKER_BG}m \x1b[0m`;
-	}
-	const leftColor = filled > 0 ? FILL_BG : TRACK_BG;
-	const rightColor = filled >= width ? FILL_BG : TRACK_BG;
-	const left = `\x1b[38;5;${leftColor}m▐\x1b[0m`;
-	const right = `\x1b[38;5;${rightColor}m▌\x1b[0m`;
-	return `${left}${cells.join("")}${right}`;
+	return out.join("");
 }
 
 function paceMarker(util: number, elapsed: number | null): number | null {
