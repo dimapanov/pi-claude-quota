@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 90" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20">
+  <rect width="720" height="90" rx="8" fill="#1e1e2e"/>
+  <text x="20" y="38" fill="#cdd6f4">claude-quota</text>
+  <!-- 5h bar -->
+  <text x="20" y="68" fill="#f9e2af">5h </text>
+  <text x="60" y="68" fill="#f9e2af">████</text>
+  <text x="124" y="68" fill="#89dceb" font-weight="bold">│</text>
+  <text x="140" y="68" fill="#585b70">░░░</text>
+  <text x="195" y="68" fill="#f9e2af"> 42%·2h</text>
+  <!-- 7d bar -->
+  <text x="360" y="68" fill="#cdd6f4">7d </text>
+  <text x="400" y="68" fill="#cdd6f4">██</text>
+  <text x="432" y="68" fill="#89dceb" font-weight="bold">│</text>
+  <text x="448" y="68" fill="#585b70">░░░░░</text>
+  <text x="535" y="68" fill="#cdd6f4"> 18%·5d</text>
+</svg>

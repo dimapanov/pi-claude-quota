@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 60" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="18">
+  <rect width="900" height="60" rx="6" fill="#11111b"/>
+  <rect x="0" y="0" width="220" height="60" fill="#313244"/>
+  <text x="20" y="38" fill="#cdd6f4">~/projects/site  main</text>
+  <text x="430" y="38" fill="#f38ba8">5h </text>
+  <text x="468" y="38" fill="#f38ba8">███████</text>
+  <text x="580" y="38" fill="#89dceb" font-weight="bold">│</text>
+  <text x="595" y="38" fill="#f38ba8"> 92%·1h</text>
+  <text x="700" y="38" fill="#f9e2af">7d ██████</text>
+  <text x="800" y="38" fill="#89dceb" font-weight="bold">│</text>
+  <text x="815" y="38" fill="#585b70">░</text>
+  <text x="830" y="38" fill="#f9e2af"> 74%·2d</text>
+</svg>

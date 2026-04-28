@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 230" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20">
+  <rect width="720" height="230" rx="8" fill="#1e1e2e"/>
+
+  <!-- Row 1: under pace -->
+  <text x="20" y="50" fill="#a6e3a1">under pace</text>
+  <text x="200" y="50" fill="#cdd6f4">██</text>
+  <text x="232" y="50" fill="#585b70">░░░</text>
+  <text x="280" y="50" fill="#89dceb" font-weight="bold">│</text>
+  <text x="296" y="50" fill="#585b70">░░</text>
+  <text x="340" y="50" fill="#7f849c">  30 % used · 80 % of window elapsed</text>
+
+  <!-- Row 2: on pace -->
+  <text x="20" y="110" fill="#f9e2af">on pace</text>
+  <text x="200" y="110" fill="#cdd6f4">████</text>
+  <text x="264" y="110" fill="#89dceb" font-weight="bold">│</text>
+  <text x="280" y="110" fill="#585b70">░░░</text>
+  <text x="340" y="110" fill="#7f849c">  50 % used · 50 % of window elapsed</text>
+
+  <!-- Row 3: over pace -->
+  <text x="20" y="170" fill="#f38ba8">slow down</text>
+  <text x="200" y="170" fill="#cdd6f4">██████</text>
+  <text x="296" y="170" fill="#585b70">░</text>
+  <text x="312" y="170" fill="#89dceb" font-weight="bold">│</text>
+  <text x="340" y="170" fill="#7f849c">  80 % used · 40 % of window elapsed</text>
+
+  <!-- Legend -->
+  <text x="20" y="215" fill="#6c7086" font-size="14">cyan │ marker = expected utilization based on time elapsed in the reset window</text>
+</svg>

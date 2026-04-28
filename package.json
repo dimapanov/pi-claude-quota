@@ -1,0 +1,35 @@
+{
+  "name": "pi-claude-quota",
+  "version": "0.1.0",
+  "description": "Pi powerline footer indicator showing Claude Code 5h/7d quota with an on-pace marker overlaid on the progress bar.",
+  "keywords": [
+    "pi-package",
+    "pi-extension",
+    "claude",
+    "claude-code",
+    "powerline",
+    "quota"
+  ],
+  "license": "MIT",
+  "author": "dimapanov",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dimapanov/pi-claude-quota.git"
+  },
+  "homepage": "https://github.com/dimapanov/pi-claude-quota#readme",
+  "bugs": {
+    "url": "https://github.com/dimapanov/pi-claude-quota/issues"
+  },
+  "files": [
+    "index.ts",
+    "README.md",
+    "LICENSE",
+    "docs"
+  ],
+  "pi": {
+    "extensions": ["./index.ts"]
+  },
+  "peerDependencies": {
+    "@mariozechner/pi-coding-agent": "*"
+  }
+}
