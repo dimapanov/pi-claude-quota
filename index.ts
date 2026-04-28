@@ -133,17 +133,17 @@ function bar(util: number, paceMarker: number | null, _restoreColor: string, wid
 			const markerChar = leftIsMarker ? BR_LEFT : BR_RIGHT;
 			// Single glyph cannot color halves independently; if the other half is
 			// lit, paint the whole cell cyan (marker wins).
-			const ch = otherLit ? BR_FULL : markerChar;
+			const ch = otherLit ? "█" : markerChar;
 			out.push(`\x1b[38;5;${MARKER_FG}m${ch}\x1b[0m`);
 			continue;
 		}
 
 		let ch: string;
-		if (leftLit && rightLit) ch = BR_FULL;
-		else if (leftLit) ch = BR_LEFT;
-		else if (rightLit) ch = BR_RIGHT;
-		else ch = BR_NONE;
-		const color = leftLit || rightLit ? FILL_FG : TRACK_FG;
+		let color: number;
+		if (leftLit && rightLit) { ch = "█"; color = FILL_FG; }       // solid full block
+		else if (leftLit) { ch = BR_LEFT; color = FILL_FG; }
+		else if (rightLit) { ch = BR_RIGHT; color = FILL_FG; }
+		else { ch = BR_NONE; color = TRACK_FG; }
 		out.push(`\x1b[38;5;${color}m${ch}\x1b[0m`);
 	}
 	return out.join("");
